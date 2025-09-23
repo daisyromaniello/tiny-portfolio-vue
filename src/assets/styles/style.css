@@ -1,0 +1,47 @@
+@font-face {
+  font-family: 'HKGrotesk-Bold';
+  src: url('../fonts/hkgrotesk-bold-webfont.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* Font globale e colori base */
+html, body {
+  font-family: 'HKGrotesk-Bold', 'BeausiteClassic-Light', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #413f3f;
+  background-color: #fef8f5;
+  margin: 0;
+  padding: 0;
+}
+
+/* Ripristino font per componenti chiave */
+.navbar,
+.newsletter,
+footer {
+  font-family: 'HKGrotesk-Bold', 'BeausiteClassic-Light', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  color: #413f3f !important;
+}
+
+/* Paragrafi monospaced */
+p {
+  font-family: 'Courier New', monospace;
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 10px auto;
+}
+
+/* Tipografia titoli */
+h1, h2, h3, h4, h5, h6 {
+  font-family: inherit;
+  color: #413f3f;
+}
+
+/* Override per form e bottoni */
+input, button, select, textarea {
+  font-family: inherit;
+}
+
+/* Componenti speciali con font monospace */
+.typewriter-large, .typewriter, .animated-text, .scritta-macchina {
+  font-family: 'Courier New', monospace;
+}

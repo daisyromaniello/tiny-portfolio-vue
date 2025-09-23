@@ -1,62 +1,50 @@
 <template>
   <div>
-    <MainNavbar />
-
     <!-- Header foto con overlay opaco e testo in Courier -->
     <div
       class="position-relative w-100"
       style="height: 700px; background-image: url('/images/Daisy.JPG'); background-size: cover; background-position: center;"
     >
       <div class="tag-overlay"></div>
-      <div
-        class="position-absolute bottom-0 mb-5 text-start"
-        style="max-width: 700px; left: 50px;"
-      >
+      <div class="position-absolute bottom-0 mb-5 text-start" style="max-width: 700px; left: 50px;">
         <p class="typewriter-large mb-1">
           Ho fatto delle foto.<br />
           Ho fotografato invece di parlare.<br />
           Ho fotografato per non dimenticare.<br />
           Per non smettere di guardare.
         </p>
-        <p class="typewriter-author">
-          -Daniel Pennac-
-        </p>
+        <p class="typewriter-author">-Daniel Pennac-</p>
       </div>
     </div>
 
     <main class="container my-5 py-5">
       <p>
-        A sei anni immaginavo il mio futuro nei panni di archeologa, astronoma e scrittrice. Tutto insieme, perchè non mi è mai bastato fare una cosa alla volta.
+        A sei anni immaginavo il mio futuro come archeologa, astronoma e scrittrice. Tutto insieme, perché non mi è mai bastato fare una cosa alla volta.
       </p>
       <p>
-        Una volta inteso che i sogni fanno i conti con il talento e che non avrei avuto abbastanza memoria e familiarità con i numeri per i primi due, sono rimasta con la penna in mano, perché alla fine dei conti scrivere è sempre stato quello che mi riesce meglio di tutto.
+        Alla fine, sono rimasta con la penna in mano e la macchina fotografica al collo, perché raccontare per parole e immagini è quello che mi riesce meglio.
       </p>
       <p>
-        Le parole che mi calzano meglio sono quelle misurate, non una in più, non una in meno, i pensieri ordinati in fila indiana.
+        Le parole che mi calzano meglio sono quelle misurate, non una in più, non una in meno, i pensieri ordinati in fila indiana. Non posso fare a meno di fotografare dettagli che colgo solo io, rincorro i giochi di luce e mi piacciono le foto dalle prospettive perfette.
       </p>
       <p>
-        Oggi disegno strategie digitali e invento contenuti creativi, vengo ricordata come l’inesperta di Groupon, scopro la mia regione insieme a Instagramers Piemonte e sono contributor di CasaFacile.
+        Il resto, è una storia ancora da inventare.
       </p>
-      <p>
-        Nel tempo libero, viaggio meno di quanto vorrei e ho una check-list dove appunto tutti i paesi che visito (ad oggi 53 in 5 continenti). Ballo lindy hop, fotografo e posto le foto su Instagram, amo scoprire la mia città, Torino, e mi circondo di persone ironiche e ciniche quanto me. Nel frattempo, continuo ad appassionarmi a più cose di quante possa farne.
-      </p>
-      <p>Il resto, è una storia ancora da inventare.</p>
     </main>
 
     <NewsletterBanner />
-    <Footer />
+    <AppFooter />
   </div>
 </template>
 
 <script>
-import MainNavbar from '@/components/MainNavbar.vue'
-import NewsletterBanner from '@/components/NewsletterBanner.vue'
-import Footer from '@/components/Footer.vue'
+import NewsletterBanner from '@/components/NewsletterBanner.vue';
+import AppFooter from '@/components/AppFooter.vue';
 
 export default {
   name: 'AboutPage',
-  components: { MainNavbar, NewsletterBanner, Footer },
-}
+  components: { NewsletterBanner, AppFooter }
+};
 </script>
 
 <style scoped>

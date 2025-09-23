@@ -1,9 +1,7 @@
 <template>
   <div>
-    <MainNavbar />
     <div class="container my-4 content-wrapper">
       <div class="row align-items-center gy-4 full-height-row">
-
         <!-- Foto a sinistra -->
         <div class="col-12 col-md-6 photo-container">
           <img
@@ -67,17 +65,16 @@
         </div>
       </div>
     </div>
-    <Footer />
+    <AppFooter />
   </div>
 </template>
 
 <script>
-import MainNavbar from '@/components/MainNavbar.vue';
-import Footer from '@/components/Footer.vue';
+import AppFooter from '@/components/AppFooter.vue';
 
 export default {
   name: 'ContattiView',
-  components: { MainNavbar, Footer },
+  components: { AppFooter },
   data() {
     return {
       form: {
@@ -113,7 +110,8 @@ export default {
 }
 
 /* Foto e modulo a 100% altezza riga */
-.photo-container, .form-container {
+.photo-container,
+.form-container {
   height: 100%;
 }
 
@@ -121,7 +119,6 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
   background: #eee;
   border-radius: 0;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);

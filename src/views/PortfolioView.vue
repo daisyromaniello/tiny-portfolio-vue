@@ -1,26 +1,25 @@
 <template>
   <div>
-    <MainNavbar />
     <div class="container-fluid px-0 my-4 content-wrapper">
-
-      <div class="instructions-text">
+      <div class="instructions-text text-center mx-auto mb-3" style="max-width: 700px;">
         Vuoi acquistare una mia fotografia fine art?<br />
         Scorri la gallery e clicca sulla tua foto preferita per vedere le opzioni di stampa.
       </div>
 
       <!-- Filtro tag e ricerca personalizzata -->
       <div class="mb-3 px-3">
-        <div class="search-wrapper">
-          <div class="input-group">
+        <div class="search-wrapper mx-auto" style="max-width: 500px;">
+          <div class="input-group rounded-pill border border-1 border-e0b3a4 shadow-sm overflow-visible">
             <input
               type="search"
-              class="form-control search-input"
+              class="form-control border-0 px-3"
               placeholder="Cerca per titolo, descrizione o tag"
               aria-label="Search"
               v-model="q"
               @input="apply"
+              :class="{ 'text-e0b3a4': !q, 'text-413f3f bg-e0b3a4': q }"
             />
-            <button class="btn search-btn" type="button" @click="apply" aria-label="Submit Search">
+            <button class="btn btn-transparent p-0 px-3" type="button" @click="apply" aria-label="Submit Search">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="#e0b3a4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search" viewBox="0 0 24 24">
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -28,12 +27,18 @@
             </button>
           </div>
           <div class="d-flex justify-content-center gap-2 mt-3">
-            <button class="tag-pill" v-for="tag in ['viaggio', 'architettura', 'design']" :key="tag" @click="filterTag(tag)" :class="{ selected: q === tag }">
+            <button 
+              class="tag-pill"
+              v-for="tag in ['viaggio', 'architettura', 'design']"
+              :key="tag"
+              @click="filterTag(tag)"
+              :class="{ selected: q === tag }"
+            >
               {{ tag }}
             </button>
           </div>
-          <div class="reset-container">
-            <button class="btn btn-link reset-btn" @click="clearFilter">Reset</button>
+          <div class="reset-container text-center mt-2">
+            <button class="btn btn-link reset-btn p-0" @click="clearFilter">Reset</button>
           </div>
         </div>
       </div>
@@ -53,24 +58,23 @@
       </section>
     </div>
     <NewsletterBanner />
-    <Footer />
+    <AppFooter />
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import MainNavbar from '@/components/MainNavbar.vue'
-import NewsletterBanner from '@/components/NewsletterBanner.vue'
-import Footer from '@/components/Footer.vue'
+import { mapGetters } from 'vuex';
+import NewsletterBanner from '@/components/NewsletterBanner.vue';
+import AppFooter from '@/components/AppFooter.vue';
 
 export default {
   name: 'PortfolioView',
-  components: { MainNavbar, NewsletterBanner, Footer },
+  components: { NewsletterBanner, AppFooter },
   data() {
     return {
       q: this.$route.query.tag || '',
       photosToShow: []
-    }
+    };
   },
   computed: {
     ...mapGetters(['filteredPhotos'])
@@ -102,24 +106,16 @@ export default {
       return (index % 5) < 3 ? 'col-12 col-sm-6 col-lg-4' : 'col-12 col-sm-6 col-lg-6';
     }
   }
-}
+};
 </script>
 
 <style scoped>
 .instructions-text {
   font-family: 'Courier New', monospace;
   font-size: 1.2rem;
-  max-width: 600px;
-  color: #424242;
-  text-align: center;
-  margin-bottom: 0.8rem;
   max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  background: none;
-  padding: 0;
-  border-radius: 0;
-  box-shadow: none;
+  color: #424242;
+  margin-bottom: 0.8rem;
 }
 
 .content-wrapper {
@@ -237,7 +233,6 @@ export default {
 }
 
 .search-wrapper {
-  max-width: 500px;
   margin: 0.1rem auto 0.3rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;

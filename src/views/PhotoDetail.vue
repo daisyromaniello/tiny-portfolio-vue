@@ -31,11 +31,11 @@
               </select>
             </div>
 
-            <div class="price-display mb-3">
+            <div class="price-display mb-3" aria-live="polite">
               Prezzo: <strong>€{{ computedPrice }}</strong>
             </div>
 
-            <button type="button" class="btn btn-primary" @click="handleAddToCart">
+            <button type="button" class="btn btn-primary rounded-pill px-4 py-2 fw-bold" @click="handleAddToCart">
               {{ addedToCart ? 'Aggiunto al carrello!' : 'Aggiungi al carrello' }}
             </button>
           </form>
@@ -49,55 +49,55 @@
     </div>
 
     <NewsletterBanner class="container-fluid px-0" />
-    <Footer class="container-fluid px-0" />
+    <AppFooter class="container-fluid px-0" />
   </div>
 </template>
 
 <script>
-import NewsletterBanner from '@/components/NewsletterBanner.vue'
-import Footer from '@/components/Footer.vue'
-import { mapGetters, mapActions } from 'vuex'
+import NewsletterBanner from '@/components/NewsletterBanner.vue';
+import AppFooter from '@/components/AppFooter.vue';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  components: { NewsletterBanner, Footer },
+  components: { NewsletterBanner, AppFooter },
   data() {
     return {
       selectedFormat: '',
       selectedPaper: '',
       selectedCustomization: '',
       addedToCart: false,
-    }
+    };
   },
   computed: {
     ...mapGetters(['getPhotoById']),
     photo() {
-      return this.getPhotoById(Number(this.$route.params.id))
+      return this.getPhotoById(Number(this.$route.params.id));
     },
     formatOptions() {
-      return ['30x40', '40x60', '50x70']
+      return ['30x40', '40x60', '50x70'];
     },
     paperOptions() {
-      return ['Lucida', 'Opaca']
+      return ['Lucida', 'Opaca'];
     },
     customizationOptions() {
-      return ['Cornice rovere', 'Cornice bianca']
+      return ['Cornice rovere', 'Cornice bianca'];
     },
     computedPrice() {
-      const priceByFormat = { '30x40': 40, '40x60': 50, '50x70': 60 }
-      return priceByFormat[this.selectedFormat] || 0
+      const priceByFormat = { '30x40': 40, '40x60': 50, '50x70': 60 };
+      return priceByFormat[this.selectedFormat] || 0;
     }
   },
   mounted() {
     if (this.photo) {
-      this.selectedFormat = this.photo.format || ''
-      this.selectedPaper = this.photo.paper || ''
-      this.selectedCustomization = this.photo.customization || ''
+      this.selectedFormat = this.photo.format || '';
+      this.selectedPaper = this.photo.paper || '';
+      this.selectedCustomization = this.photo.customization || '';
     }
   },
   methods: {
     ...mapActions({
       setPhotoOptions: 'setPhotoOptions',
-      addItemToCart: 'addToCart'
+      addItemToCart: 'addToCart',
     }),
     handleAddToCart() {
       this.setPhotoOptions({
@@ -106,8 +106,8 @@ export default {
           format: this.selectedFormat,
           paper: this.selectedPaper,
           customization: this.selectedCustomization,
-        }
-      })
+        },
+      });
       const item = {
         id: this.photo.id,
         title: this.photo.title,
@@ -115,79 +115,75 @@ export default {
         paper: this.selectedPaper,
         customization: this.selectedCustomization,
         price: this.computedPrice,
-      }
-      this.addItemToCart(item)
-      this.addedToCart = true
+      };
+      this.addItemToCart(item);
+      this.addedToCart = true;
       setTimeout(() => {
-        this.addedToCart = false
-      }, 2000)
-    }
+        this.addedToCart = false;
+      }, 2000);
+    },
   }
-}
+};
 </script>
 
 <style scoped>
 .content-wrapper {
   padding-top: 70px;
 }
+
 .gallery-image {
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: cover;
-  display: block;
   background: #eee;
   border-radius: 0;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
   position: relative;
   z-index: 0;
   cursor: default;
-  overflow: hidden;
 }
+
 h1 {
   font-weight: 700;
   margin-bottom: 1rem;
 }
-.d-flex.flex-column > p.text-muted {
-  margin-left: 0;
-  padding-left: 0;
-}
+
 p.text-muted {
   color: #6c757d;
 }
+
 .mb-4 {
   margin-bottom: 1.5rem !important;
 }
+
 .form-label {
   font-weight: 600;
   color: #413f3f;
 }
+
 .styled-select {
   border: 1px solid #b89c94;
   border-radius: 0.25rem;
-  padding: 10px 15px;
+  padding: 0.5rem 1rem;
   font-size: 1rem;
-  color: #413f3f;
   background-color: #f9f0ed;
+  color: #413f3f;
 }
+
 .price-display {
   font-size: 1.5rem;
   font-weight: 700;
   color: #413f3f;
 }
+
 .btn-primary {
-  border-radius: 30px;
-  padding: 0.7rem 2rem;
-  font-weight: 700;
-  font-size: 1.1rem;
   background-color: #e0b3a4;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
+
 .btn-primary:hover {
   background-color: #c79484;
-}
-.container {
-  max-width: 960px;
 }
 </style>

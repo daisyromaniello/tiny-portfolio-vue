@@ -1,6 +1,5 @@
 <template>
   <div>
-    <MainNavbar />
     <div
       id="heroCarousel"
       class="carousel slide"
@@ -50,16 +49,15 @@
               display: 'flex',
               justifyContent: 'flex-start',
               alignItems: 'flex-end',
-              position: 'relative',
-              paddingLeft: '30px',
-              paddingBottom: '2rem'
+              position: 'relative'
             }"
+            class="ps-3 pb-4"
             role="button"
             tabindex="0"
             @keydown.enter.prevent="navigateToTag(tagItem.tag)"
           >
             <div class="tag-overlay"></div>
-            <div class="tag-caption">{{ tagItem.name }}</div>
+            <div class="tag-caption fw-bold text-white">{{ tagItem.name }}</div>
           </a>
         </div>
       </div>
@@ -70,11 +68,7 @@
         data-bs-target="#heroCarousel"
         data-bs-slide="prev"
       >
-        <span
-          class="carousel-control-prev-icon"
-          aria-hidden="true"
-          :style="{ filter: 'drop-shadow(0 0 2px black) brightness(1.5)' }"
-        ></span>
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
       </button>
 
@@ -84,11 +78,7 @@
         data-bs-target="#heroCarousel"
         data-bs-slide="next"
       >
-        <span
-          class="carousel-control-next-icon"
-          aria-hidden="true"
-          :style="{ filter: 'drop-shadow(0 0 2px black) brightness(1.5)' }"
-        ></span>
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
     </div>
@@ -96,11 +86,8 @@
 </template>
 
 <script>
-import MainNavbar from '@/components/MainNavbar.vue';
-
 export default {
   name: 'HomeView',
-  components: { MainNavbar },
   data() {
     return {
       fullText: 'Fotografie di viaggio, design e architettura.',
@@ -188,6 +175,12 @@ export default {
   position: relative;
 }
 
+/* Usa filtri per ovviare allo stile inline */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: drop-shadow(0 0 2px black) brightness(1.5);
+}
+
 .tag-overlay {
   position: absolute;
   bottom: 0;
@@ -202,9 +195,6 @@ export default {
 
 .tag-caption {
   font-family: 'Courier New', monospace;
-  color: white;
-  font-weight: bold;
-  font-size: 1.2rem;
   user-select: none;
   pointer-events: none;
   position: relative;

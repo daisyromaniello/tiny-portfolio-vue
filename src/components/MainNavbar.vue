@@ -31,7 +31,6 @@
           <li class="nav-item menu-item position-relative">
             <router-link class="nav-link d-flex align-items-center" to="/cart" @click="closeMenu">
               <font-awesome-icon icon="shopping-cart" class="me-2" />
-              Carrello
               <span v-if="cartCount" class="badge bg-danger position-absolute top-0 start-100 translate-middle">
                 {{ cartCount }}
               </span>

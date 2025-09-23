@@ -5,21 +5,28 @@
   font-style: normal;
 }
 
+/* Variabili CSS globali */
+:root {
+  --body-font-family: 'HKGrotesk-Bold', 'BeausiteClassic-Light', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --text-color: #413f3f;
+  --background-color: #fef8f5;
+}
+
 /* Font globale e colori base */
 html, body {
-  font-family: 'HKGrotesk-Bold', 'BeausiteClassic-Light', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  color: #413f3f;
-  background-color: #fef8f5;
+  font-family: var(--body-font-family);
+  color: var(--text-color);
+  background-color: var(--background-color);
   margin: 0;
   padding: 0;
 }
 
-/* Ripristino font per componenti chiave */
+/* Font per componenti chiave */
 .navbar,
 .newsletter,
 footer {
-  font-family: 'HKGrotesk-Bold', 'BeausiteClassic-Light', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-  color: #413f3f !important;
+  font-family: var(--body-font-family);
+  color: var(--text-color);
 }
 
 /* Paragrafi monospaced */
@@ -33,7 +40,7 @@ p {
 /* Tipografia titoli */
 h1, h2, h3, h4, h5, h6 {
   font-family: inherit;
-  color: #413f3f;
+  color: var(--text-color);
 }
 
 /* Override per form e bottoni */
@@ -41,7 +48,7 @@ input, button, select, textarea {
   font-family: inherit;
 }
 
-/* Componenti speciali con font monospace */
+/* Componenti speciali monospace */
 .typewriter-large, .typewriter, .animated-text, .scritta-macchina {
   font-family: 'Courier New', monospace;
 }

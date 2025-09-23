@@ -1,7 +1,7 @@
 <template>
   <footer class="bg-footer text-footer py-4">
     <div class="container d-flex flex-column flex-sm-row justify-content-between align-items-center">
-      <p class="mb-3 mb-sm-0">Mi trovi qui:</p>
+      <!-- <p class="mb-3 mb-sm-0">Mi trovi qui:</p> -->
       <div class="social-icons d-flex">
         <a href="https://www.instagram.com/daisyromaniello/?hl=it" target="_blank" rel="noopener" aria-label="Instagram">
           <img src="/images/instagram-icon.png" alt="Instagram" class="social-icon" />
@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: "AppFooter",
+  name: 'AppFooter'  
 };
 </script>
 

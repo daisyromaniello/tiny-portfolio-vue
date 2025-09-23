@@ -19,6 +19,7 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto nav-links">
+
           <li class="nav-item menu-item">
             <router-link class="nav-link" to="/portfolio" @click="closeMenu">Fine art</router-link>
           </li>
@@ -28,14 +29,31 @@
           <li class="nav-item menu-item">
             <router-link class="nav-link" to="/contatti" @click="closeMenu">Contatti</router-link>
           </li>
-          <li class="nav-item menu-item position-relative">
-            <router-link class="nav-link d-flex align-items-center" to="/cart" @click="closeMenu">
+
+          <li
+            class="nav-item menu-item position-relative"
+            ref="cartWrapper"
+          >
+            <div
+              class="nav-link d-flex align-items-center"
+              aria-label="Carrello"
+              style="cursor: pointer;"
+              @click.prevent="toggleCart"
+              tabindex="0"
+              @keydown.enter.prevent="toggleCart"
+            >
               <font-awesome-icon icon="shopping-cart" class="me-2" />
-              <span v-if="cartCount" class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+              <span
+                v-if="cartCount"
+                class="badge bg-danger position-absolute top-0 start-100 translate-middle"
+              >
                 {{ cartCount }}
               </span>
-            </router-link>
+            </div>
+
+            <CartDropdown v-if="showCart" />
           </li>
+
         </ul>
       </div>
     </div>
@@ -43,23 +61,45 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
+import CartDropdown from "@/components/CartDropdown.vue";
 
 export default {
   name: "MainNavbar",
+  components: { CartDropdown },
+  data() {
+    return {
+      showCart: false,
+    };
+  },
   computed: {
     ...mapGetters({
-      cartItems: 'cartItems',
+      cartItems: "cartItems",
     }),
     cartCount() {
-      return this.cartItems.length
-    }
+      return this.cartItems.length;
+    },
+  },
+  mounted() {
+    document.addEventListener("click", this.handleClickOutside);
+  },
+  unmounted() {
+    document.removeEventListener("click", this.handleClickOutside);
   },
   methods: {
     closeMenu() {
-      const navbarCollapse = document.getElementById('navbarSupportedContent');
-      if (navbarCollapse && navbarCollapse.classList.contains('show')) {
-        navbarCollapse.classList.remove('show');
+      const navbarCollapse = document.getElementById("navbarSupportedContent");
+      if (navbarCollapse && navbarCollapse.classList.contains("show")) {
+        navbarCollapse.classList.remove("show");
+      }
+    },
+    toggleCart() {
+      this.showCart = !this.showCart;
+    },
+    handleClickOutside(e) {
+      const cartWrapper = this.$refs.cartWrapper;
+      if (cartWrapper && !cartWrapper.contains(e.target)) {
+        this.showCart = false;
       }
     },
   },
@@ -74,14 +114,6 @@ export default {
 .brand {
   font-weight: bold;
   font-size: 1.5rem;
-}
-
-.navbar-dark .navbar-toggler-icon {
-  /* icona di default Bootstrap */
-}
-
-.navbar-nav {
-  gap: 30px;
 }
 
 .nav-links {

@@ -43,19 +43,12 @@
         </div>
       </div>
 
-      <!-- Gallery con overlay titolo centrato -->
-      <section class="gallery-bootstrap-grid py-3">
-        <div class="row gy-4">
-          <div v-for="(photo, index) in photosToShow" :key="photo.id" :class="getColClass(index)">
-            <div class="gallery-item position-relative" @click="selectPhoto(photo.id)">
-              <img :src="photo.url" :alt="photo.title" class="gallery-image w-100" />
-              <div class="gallery-caption d-flex flex-column justify-content-center align-items-center text-center">
-                <div class="title">{{ photo.title }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <!-- Uso del componente PortfolioGallery -->
+      <PortfolioGallery
+        :photos="photosToShow"
+        @openDetail="selectPhoto"
+      />
+
     </div>
     <NewsletterBanner />
     <AppFooter />
@@ -66,10 +59,11 @@
 import { mapGetters } from 'vuex';
 import NewsletterBanner from '@/components/NewsletterBanner.vue';
 import AppFooter from '@/components/AppFooter.vue';
+import PortfolioGallery from '@/components/PortfolioGallery.vue';
 
 export default {
   name: 'PortfolioView',
-  components: { NewsletterBanner, AppFooter },
+  components: { NewsletterBanner, AppFooter, PortfolioGallery },
   data() {
     return {
       q: this.$route.query.tag || '',
@@ -102,9 +96,6 @@ export default {
     selectPhoto(id) {
       this.$router.push({ name: 'PhotoDetail', params: { id } });
     },
-    getColClass(index) {
-      return (index % 5) < 3 ? 'col-12 col-sm-6 col-lg-4' : 'col-12 col-sm-6 col-lg-6';
-    }
   }
 };
 </script>
@@ -120,75 +111,6 @@ export default {
 
 .content-wrapper {
   padding-top: 70px;
-}
-
-.gallery-bootstrap-grid {
-  padding-bottom: 32px;
-  padding-top: 32px;
-}
-
-.gallery-item {
-  position: relative;
-  cursor: pointer;
-  background: #fff;
-  border: 1px solid #b5cace;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
-  overflow: hidden;
-  border-radius: 0;
-  aspect-ratio: 3 / 4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, z-index 0.3s ease;
-}
-
-.gallery-item:hover {
-  transform: scale(1.05);
-  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.85);
-  z-index: 121;
-}
-
-.gallery-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  background: #eee;
-  border-radius: 0;
-  transition: transform 0.3s ease;
-  position: relative;
-  z-index: 0;
-}
-
-.gallery-item:hover .gallery-image {
-  transform: scale(1.1);
-}
-
-.gallery-caption {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 100%);
-  color: white;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  font-size: 1rem;
-  font-weight: 600;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0 10px;
-  text-align: center;
-}
-
-.gallery-item:hover .gallery-caption {
-  opacity: 1;
-}
-
-.gallery-caption .title {
-  font-size: 1.1rem;
-  font-family: Courier, monospace;
 }
 
 .tag-pill {
@@ -244,40 +166,5 @@ export default {
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
   overflow: visible;
   border: 1px solid #e0b3a4;
-}
-
-.search-input {
-  border: none;
-  padding: 8px 12px;
-  font-size: 1rem;
-  color: #e0b3a4;
-  background: transparent;
-  outline: none;
-}
-
-.search-input::placeholder {
-  color: #e0b3a4;
-}
-
-.search-input:focus {
-  color: #413f3f;
-  background-color: #e0b3a4;
-  box-shadow: none;
-}
-
-.search-btn {
-  background-color: transparent;
-  border: none;
-  padding: 0 1.25rem;
-  cursor: pointer;
-}
-
-.search-btn svg {
-  stroke: #e0b3a4;
-  transition: stroke 0.3s ease;
-}
-
-.search-btn:hover svg {
-  stroke: #413f3f;
 }
 </style>

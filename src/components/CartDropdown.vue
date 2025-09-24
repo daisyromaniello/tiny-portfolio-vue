@@ -117,15 +117,20 @@ export default {
   padding: 24px;
   z-index: 1050;
   font-family: Arial, sans-serif;
+  overflow: visible; /* assicura che nulla venga tagliato */
 }
 
 @media (max-width: 480px) {
   .cart-dropdown {
-    width: 95vw !important;
-    top: calc(100% + 1rem) !important;
+    position: fixed !important;
+    top: 56px !important; /* altezza navbar, regola se serve */
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%) !important;
+    width: 95vw !important;
+    max-width: 95vw !important;
+    margin: 0 !important;
+    overflow: visible !important;
   }
 }
 

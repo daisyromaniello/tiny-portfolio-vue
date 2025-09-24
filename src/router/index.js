@@ -4,6 +4,7 @@ import PortfolioView from '@/views/PortfolioView.vue';
 import PhotoDetail from '@/views/PhotoDetail.vue';
 import About from '@/views/About.vue';
 import ContattiView from '@/views/ContattiView.vue';
+import CheckoutPage from '@/views/CheckoutPage.vue';  // import nuovo componente
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -11,6 +12,7 @@ const routes = [
   { path: '/photo/:id', name: 'PhotoDetail', component: PhotoDetail, props: true },
   { path: '/about', name: 'About', component: About },
   { path: '/contatti', name: 'ContattiView', component: ContattiView },
+  { path: '/checkout', name: 'Checkout', component: CheckoutPage }  // nuova route
 ];
 
 const router = createRouter({

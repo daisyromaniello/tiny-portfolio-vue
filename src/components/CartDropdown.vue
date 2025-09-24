@@ -60,7 +60,10 @@
       <span>{{ cartTotal }} €</span>
     </div>
 
-    <button class="btn btn-primary w-100 fw-bold mt-4 py-2 btn-cta">
+    <button 
+      class="btn btn-primary w-100 fw-bold mt-4 py-2 btn-cta"
+      @click="$router.push('/checkout')"
+    >
       Vai alla cassa
     </button>
   </div>

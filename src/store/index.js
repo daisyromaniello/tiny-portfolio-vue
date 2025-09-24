@@ -8,9 +8,9 @@ const priceByFormat = {
 
 export default createStore({
   state: {
-    photos: [],           // ora vuoto, dati caricati da file esterno
-    photoOptions: {},     // opzioni dinamiche per id foto => { format, paper, customization }
-    cart: []              // array con elementi carrello: { id, title, format, paper, customization, price, qty }
+    photos: [],
+    photoOptions: {},
+    cart: []
   },
   getters: {
     filteredPhotos: (state) => (q) => {
@@ -62,6 +62,41 @@ export default createStore({
       } else {
         state.cart.push({ ...item, qty: 1 })
       }
+    },
+    INCREMENT_QTY(state, item) {
+      const cartItem = state.cart.find(cartItem =>
+        cartItem.id === item.id &&
+        cartItem.format === item.format &&
+        cartItem.paper === item.paper &&
+        cartItem.customization === item.customization
+      )
+      if (cartItem) {
+        cartItem.qty = (cartItem.qty || 1) + 1
+      }
+    },
+    DECREMENT_QTY(state, item) {
+      const cartItemIndex = state.cart.findIndex(cartItem =>
+        cartItem.id === item.id &&
+        cartItem.format === item.format &&
+        cartItem.paper === item.paper &&
+        cartItem.customization === item.customization
+      )
+      if (cartItemIndex !== -1) {
+        const cartItem = state.cart[cartItemIndex]
+        if (cartItem.qty > 1) {
+          cartItem.qty--
+        } else {
+          state.cart.splice(cartItemIndex, 1)
+        }
+      }
+    },
+    REMOVE_CART_ITEM(state, item) {
+      state.cart = state.cart.filter(cartItem =>
+        !(cartItem.id === item.id &&
+          cartItem.format === item.format &&
+          cartItem.paper === item.paper &&
+          cartItem.customization === item.customization)
+      )
     }
   },
   actions: {

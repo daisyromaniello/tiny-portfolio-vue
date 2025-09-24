@@ -7,6 +7,7 @@
     <form @submit.prevent="submitOrder" class="checkout-form mt-4">
       <h2>Dettagli Spedizione</h2>
       <input v-model="shipping.name" placeholder="Nome" required />
+      <input v-model="shipping.surname" placeholder="Cognome" required />
       <input v-model="shipping.address" placeholder="Indirizzo" required />
       <input v-model="shipping.email" placeholder="Email" type="email" required />
 
@@ -17,10 +18,16 @@
         <option value="paypal">PayPal</option>
       </select>
 
-      <button type="submit" class="btn btn-checkout mt-3" :disabled="cartTotal === 0">
-        Conferma Ordine
-      </button>
+      <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-checkout mt-3" :disabled="cartTotal === 0">
+          Paga
+        </button>
+      </div>
     </form>
+
+    <p v-if="orderSubmitted" class="order-message mt-3 text-center">
+  Grazie per il tuo acquisto!<br>Controlla la mail per la conferma d'ordine.
+</p>
   </div>
 
   <AppFooter />
@@ -34,8 +41,9 @@ export default {
   components: { AppFooter },
   data() {
     return {
-      shipping: { name: '', address: '', email: '' },
-      payment: { method: '' }
+      shipping: { name: '', surname: '', address: '', email: '' },
+      payment: { method: '' },
+      orderSubmitted: false
     };
   },
   computed: {
@@ -47,7 +55,8 @@ export default {
         alert('Il carrello è vuoto, aggiungi almeno un prodotto.');
         return;
       }
-      alert(`Ordine inviato!\nTotale: ${this.cartTotal}€\nGrazie ${this.shipping.name}.`);
+      this.orderSubmitted = true;
+      // Qui potresti aggiungere la logica di invio dati al backend
     }
   }
 };
@@ -119,5 +128,11 @@ export default {
   font-weight: bold;
   font-size: 1.13rem;
   margin-bottom: 1.4rem;
+}
+
+.order-message {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #413f3f;
 }
 </style>

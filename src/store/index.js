@@ -97,6 +97,9 @@ export default createStore({
           cartItem.paper === item.paper &&
           cartItem.customization === item.customization)
       )
+    },
+    CLEAR_CART(state) {
+      state.cart = []
     }
   },
   actions: {
@@ -117,6 +120,9 @@ export default createStore({
     },
     addToCart({ commit }, item) {
       commit('ADD_TO_CART', item)
+    },
+    clearCart({ commit }) {
+      commit('CLEAR_CART')
     }
   }
 })

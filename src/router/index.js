@@ -18,6 +18,10 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior() {
+    // scrolla sempre in cima alla pagina
+    return { top: 0 };
+  }
 });
 
 export default router;

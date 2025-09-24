@@ -29,7 +29,7 @@
                 required
                 autocomplete="given-name"
                 aria-required="true"
-                placeholder="Nome *"
+                placeholder="Nome"
               />
             </div>
 
@@ -43,7 +43,7 @@
                 required
                 autocomplete="email"
                 aria-required="true"
-                placeholder="Email *"
+                placeholder="Email"
               />
             </div>
 
@@ -56,7 +56,7 @@
                 rows="5"
                 required
                 aria-required="true"
-                placeholder="Messaggio *"
+                placeholder="Messaggio"
               ></textarea>
             </div>
 

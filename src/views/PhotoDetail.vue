@@ -35,7 +35,7 @@
               Prezzo: <strong>€{{ computedPrice }}</strong>
             </div>
 
-            <button type="button" class="btn btn-primary rounded-pill px-4 py-2 fw-bold" @click="handleAddToCart">
+            <button type="button" class="btn btn-checkout" @click="handleAddToCart">
               {{ addedToCart ? 'Aggiunto al carrello!' : 'Aggiungi al carrello' }}
             </button>
           </form>
@@ -176,14 +176,21 @@ p.text-muted {
   color: #413f3f;
 }
 
-.btn-primary {
-  background-color: #e0b3a4;
+.btn-checkout {
+  background-color: #b5cace;
+  color: #413f3f;
   border: none;
+  border-radius: 4px;
+  padding: 0.95rem 1.35rem;
+  font-weight: bold;
+  font-size: 1.13rem;
+  margin-bottom: 2.4rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 6px rgba(41,31,26,0.06);
 }
 
-.btn-primary:hover {
-  background-color: #c79484;
+.btn-checkout:hover {
+  background-color: #b89c94;
 }
 </style>

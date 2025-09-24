@@ -1,14 +1,12 @@
 <template>
   <div class="checkout-page container my-5 px-3">
-    <div class="order-summary mt-4">
-      <h3>Totale Ordine: {{ cartTotal }} €</h3>
-    </div>
-
     <form @submit.prevent="submitOrder" class="checkout-form mt-4">
       <h2>Dettagli Spedizione</h2>
       <input v-model="shipping.name" placeholder="Nome" required />
       <input v-model="shipping.surname" placeholder="Cognome" required />
       <input v-model="shipping.address" placeholder="Indirizzo" required />
+      <input v-model="shipping.cap" placeholder="CAP" required />
+      <input v-model="shipping.city" placeholder="Città" required />
       <input v-model="shipping.email" placeholder="Email" type="email" required />
 
       <h2>Metodo di Pagamento</h2>
@@ -18,16 +16,33 @@
         <option value="paypal">PayPal</option>
       </select>
 
+      <div class="payment-summary mt-3">
+        <div class="d-flex justify-content-between">
+          <span>Totale parziale</span>
+          <span>{{ cartTotal }} €</span>
+        </div>
+        <div class="d-flex justify-content-between">
+          <span>Costo spedizione</span>
+          <span v-if="cartTotal < FREE_SHIPPING_THRESHOLD">8€</span>
+          <span v-else>Spedizione gratuita</span>
+        </div>
+        <hr />
+        <div class="d-flex justify-content-between fw-bold">
+          <span>Totale</span>
+          <span>{{ cartTotalWithShipping }} €</span>
+        </div>
+      </div>
+
       <div class="d-flex justify-content-center">
-        <button type="submit" class="btn btn-checkout mt-3" :disabled="cartTotal === 0">
-          Paga
+        <button type="submit" class="btn btn-checkout mt-3" :disabled="cartTotalWithShipping === 0">
+          Paga {{ cartTotalWithShipping }} €
         </button>
       </div>
     </form>
 
     <p v-if="orderSubmitted" class="order-message mt-3 text-center">
-  Grazie per il tuo acquisto!<br>Controlla la mail per la conferma d'ordine.
-</p>
+      Grazie per il tuo acquisto!<br>Controlla la mail per la conferma d'ordine.
+    </p>
   </div>
 
   <AppFooter />
@@ -37,26 +52,44 @@
 import AppFooter from '@/components/AppFooter.vue';
 import { mapGetters } from 'vuex';
 
+const FREE_SHIPPING_THRESHOLD = 80;
+const SHIPPING_COST = 8;
+
 export default {
   components: { AppFooter },
   data() {
     return {
-      shipping: { name: '', surname: '', address: '', email: '' },
+      shipping: { name: '', surname: '', address: '', cap: '', city: '', email: '' },
       payment: { method: '' },
       orderSubmitted: false
     };
   },
   computed: {
     ...mapGetters(['cartTotal']),
+    cartTotalWithShipping() {
+      if (this.cartTotal === 0) return 0;
+      if (this.cartTotal < FREE_SHIPPING_THRESHOLD) {
+        return this.cartTotal + SHIPPING_COST;
+      }
+      return this.cartTotal;
+    },
+    FREE_SHIPPING_THRESHOLD() {
+      return FREE_SHIPPING_THRESHOLD;
+    }
   },
   methods: {
     submitOrder() {
-      if (this.cartTotal === 0) {
+      if (this.cartTotalWithShipping === 0) {
         alert('Il carrello è vuoto, aggiungi almeno un prodotto.');
         return;
       }
       this.orderSubmitted = true;
-      // Qui potresti aggiungere la logica di invio dati al backend
+      this.$store.commit('CLEAR_CART'); // svuota carrello al pagamento
+
+      // Redirect automatico alla homepage dopo 5 secondi
+      setTimeout(() => {
+        this.$router.push('/');
+      }, 2000);
     }
   }
 };
@@ -79,6 +112,18 @@ export default {
     border-radius: 0;
     box-shadow: none;
   }
+}
+
+.payment-summary {
+  background: #f9f8f6;
+  padding: 1rem 1.2rem;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  color: #413f3f;
+}
+
+.payment-summary div {
+  margin-bottom: 0.5rem;
 }
 
 .checkout-form input,
@@ -122,12 +167,6 @@ export default {
   background-color: #ccc;
   color: #888;
   cursor: not-allowed;
-}
-
-.order-summary {
-  font-weight: bold;
-  font-size: 1.13rem;
-  margin-bottom: 1.4rem;
 }
 
 .order-message {

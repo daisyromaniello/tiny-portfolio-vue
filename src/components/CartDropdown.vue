@@ -1,5 +1,5 @@
 <template>
-  <div class="cart-dropdown shadow rounded bg-white p-4" role="dialog" aria-modal="true">
+  <div v-if="isDropdownVisible" class="cart-dropdown shadow rounded bg-white p-4" role="dialog" aria-modal="true">
     <div class="shipping-message mb-3 fw-semibold text-secondary" style="letter-spacing: 0.03em;">
       Spedizione gratuita per ordini sopra <strong class="text-dark">{{ freeShippingThreshold }}€</strong>
     </div>
@@ -62,7 +62,7 @@
 
     <button 
       class="btn btn-primary w-100 fw-bold mt-4 py-2 btn-cta"
-      @click="$router.push('/checkout')"
+      @click="goToCheckout"
     >
       Vai alla cassa
     </button>
@@ -76,6 +76,11 @@ const FREE_SHIPPING_THRESHOLD = 80;
 
 export default {
   name: "CartDropdown",
+  data() {
+    return {
+      isDropdownVisible: true,
+    };
+  },
   computed: {
     ...mapGetters({
       cart: "cartItems",
@@ -101,6 +106,12 @@ export default {
     removeItem(item) {
       this.$store.commit("REMOVE_CART_ITEM", item);
     },
+    goToCheckout() {
+      this.isDropdownVisible = false;
+      this.$nextTick(() => {
+        this.$router.push('/checkout');
+      });
+    }
   },
 };
 </script>

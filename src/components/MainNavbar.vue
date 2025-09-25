@@ -74,11 +74,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      cartItems: "cartItems",
+      cartCount: "cartTotalQuantity"
     }),
-    cartCount() {
-      return this.cartItems.length;
-    },
   },
   mounted() {
     document.addEventListener("click", this.handleClickOutside);

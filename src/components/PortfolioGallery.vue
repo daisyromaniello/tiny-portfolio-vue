@@ -14,33 +14,21 @@
 </template>
 
 <script>
-import { computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
-
 export default {
   name: 'PortfolioGallery',
-  setup(_, { emit }) {
-    const store = useStore()
-
-    onMounted(() => {
-      store.dispatch('fetchPhotos')
-    })
-
-    const photos = computed(() =>
-      store.state.photos.map(photo => ({
-        ...photo,
-        url: photo.fileName ? `/images/${photo.fileName}` : ''
-      }))
-    )
-
-    const getColClass = (index) =>
-      (index % 5) < 3 ? 'col-12 col-sm-6 col-lg-4' : 'col-12 col-sm-6 col-lg-6'
-
-    const openDetail = (id) => {
-      emit('openDetail', id)
+  props: {
+    photos: {
+      type: Array,
+      required: true
     }
-
-    return { photos, getColClass, openDetail }
+  },
+  methods: {
+    getColClass(index) {
+      return (index % 5) < 3 ? 'col-12 col-sm-6 col-lg-4' : 'col-12 col-sm-6 col-lg-6'
+    },
+    openDetail(id) {
+      this.$emit('openDetail', id)
+    }
   }
 }
 </script>

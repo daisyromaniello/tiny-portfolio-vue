@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 const priceByFormat = {
   '30x40': 40,
@@ -41,7 +42,10 @@ export default createStore({
     cartItems: (state) => state.cart,
     cartTotal(state) {
       return state.cart.reduce((sum, item) => sum + item.price * (item.qty || 1), 0)
-    }
+    },
+    cartTotalQuantity(state) {
+      return state.cart.reduce((acc, item) => acc + (item.qty || 0), 0)
+    },
   },
   mutations: {
     setPhotos(state, photos) {
@@ -110,6 +114,7 @@ export default createStore({
           throw new Error(`HTTP error! status: ${response.status}`)
         }
         const photos = await response.json()
+        console.log('Foto caricate:', photos.length)
         commit('setPhotos', photos)
       } catch (error) {
         console.error('Errore caricamento foto:', error)
@@ -124,5 +129,10 @@ export default createStore({
     clearCart({ commit }) {
       commit('CLEAR_CART')
     }
-  }
+  },
+  plugins: [
+    createPersistedState({
+      paths: ['cart', 'photoOptions']
+    })
+  ]
 })

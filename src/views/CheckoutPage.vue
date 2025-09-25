@@ -5,7 +5,13 @@
       <input v-model="shipping.name" placeholder="Nome" required />
       <input v-model="shipping.surname" placeholder="Cognome" required />
       <input v-model="shipping.address" placeholder="Indirizzo" required />
-      <input v-model="shipping.cap" placeholder="CAP" required />
+      <input 
+        v-model="shipping.cap" 
+        placeholder="CAP" 
+        required 
+        pattern="^\d{5}$" 
+        title="Inserisci esattamente 5 numeri" 
+      />
       <input v-model="shipping.city" placeholder="Città" required />
       <input v-model="shipping.email" placeholder="Email" type="email" required />
 
@@ -79,6 +85,12 @@ export default {
   },
   methods: {
     submitOrder() {
+      const capRegex = /^\d{5}$/;
+      if (!capRegex.test(this.shipping.cap)) {
+        alert('Il CAP deve contenere esattamente 5 numeri.');
+        return;
+      }
+
       if (this.cartTotalWithShipping === 0) {
         alert('Il carrello è vuoto, aggiungi almeno un prodotto.');
         return;
@@ -86,7 +98,7 @@ export default {
       this.orderSubmitted = true;
       this.$store.commit('CLEAR_CART'); // svuota carrello al pagamento
 
-      // Redirect automatico alla homepage dopo 5 secondi
+      // Redirect automatico alla homepage dopo 2 secondi
       setTimeout(() => {
         this.$router.push('/');
       }, 2000);

@@ -94,9 +94,9 @@ export default {
       displayedText: '',
       typingDone: false,
       carouselTags: [
-        { tag: 'viaggio', name: 'Viaggio', img: '/images/viaggio.png' },
-        { tag: 'design', name: 'Design', img: '/images/design.png' },
-        { tag: 'architettura', name: 'Architettura', img: '/images/architettura.png' }
+        { tag: 'viaggio', name: 'Viaggio', img: '/images/viaggio.jpg' },
+        { tag: 'design', name: 'Design', img: '/images/design.jpg' },
+        { tag: 'architettura', name: 'Architettura', img: '/images/architettura.jpg' }
       ]
     };
   },

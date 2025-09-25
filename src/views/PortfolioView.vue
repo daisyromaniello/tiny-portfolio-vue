@@ -48,7 +48,6 @@
         :photos="photosToShow"
         @openDetail="selectPhoto"
       />
-
     </div>
     <NewsletterBanner />
     <AppFooter />
@@ -56,48 +55,43 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import NewsletterBanner from '@/components/NewsletterBanner.vue';
-import AppFooter from '@/components/AppFooter.vue';
-import PortfolioGallery from '@/components/PortfolioGallery.vue';
+import { mapGetters } from 'vuex'
+import NewsletterBanner from '@/components/NewsletterBanner.vue'
+import AppFooter from '@/components/AppFooter.vue'
+import PortfolioGallery from '@/components/PortfolioGallery.vue'
 
 export default {
   name: 'PortfolioView',
   components: { NewsletterBanner, AppFooter, PortfolioGallery },
   data() {
     return {
-      q: this.$route.query.tag || '',
-      photosToShow: []
-    };
+      q: this.$route.query.tag || ''
+    }
   },
   computed: {
-    ...mapGetters(['filteredPhotos'])
+    ...mapGetters(['filteredPhotos']),
+    photosToShow() {
+      return this.filteredPhotos(this.q)
+    }
   },
   created() {
-    this.photosToShow = this.filteredPhotos(this.q);
-  },
-  watch: {
-    q(newQ) {
-      this.photosToShow = this.filteredPhotos(newQ);
-    }
+    this.$store.dispatch('fetchPhotos')
   },
   methods: {
     apply() {
-      this.photosToShow = this.filteredPhotos(this.q);
+      // Metodo vuoto per evitare errore ESLint
     },
     filterTag(tag) {
-      this.q = tag;
-      this.photosToShow = this.filteredPhotos(tag);
+      this.q = tag
     },
     clearFilter() {
-      this.q = '';
-      this.photosToShow = this.filteredPhotos('');
+      this.q = ''
     },
     selectPhoto(id) {
-      this.$router.push({ name: 'PhotoDetail', params: { id } });
-    },
+      this.$router.push({ name: 'PhotoDetail', params: { id } })
+    }
   }
-};
+}
 </script>
 
 <style scoped>

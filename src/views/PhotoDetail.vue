@@ -6,7 +6,13 @@
           <img :src="photo.url" :alt="photo.title" class="gallery-image img-fluid" />
         </div>
         <div class="col-12 col-md-6 d-flex flex-column">
+          <button class="btn-portfolio-back" @click="$router.push({ name: 'PortfolioView' })">
+            ← Torna al portfolio
+          </button>
           <h1 class="mb-3">{{ photo.title }}</h1>
+          <div :class="['availability-label', availabilityClass]">
+            {{ availabilityLabel }}
+          </div>
           <p class="text-muted mb-4">{{ photo.desc }}</p>
 
           <form>
@@ -35,8 +41,13 @@
               Prezzo: <strong>€{{ computedPrice }}</strong>
             </div>
 
-            <button type="button" class="btn btn-checkout" @click="handleAddToCart">
-              {{ addedToCart ? 'Aggiunto al carrello!' : 'Aggiungi al carrello' }}
+            <button
+              type="button"
+              class="btn btn-checkout"
+              @click="handleAddToCart"
+              :disabled="isOutOfStock"
+            >
+              {{ isOutOfStock ? 'Non disponibile' : (addedToCart ? 'Aggiunto al carrello!' : 'Aggiungi al carrello') }}
             </button>
           </form>
         </div>
@@ -85,6 +96,23 @@ export default {
     computedPrice() {
       const priceByFormat = { '30x40': 40, '40x60': 50, '50x70': 60 };
       return priceByFormat[this.selectedFormat] || 0;
+    },
+    availabilityLabel() {
+      if (!this.photo) return '';
+      const inv = this.photo.inventory ?? 0;
+      if (inv > 5) return 'Disponibile';
+      if (inv > 0) return 'In esaurimento';
+      return 'Esaurito';
+    },
+    availabilityClass() {
+      if (!this.photo) return '';
+      const inv = this.photo.inventory ?? 0;
+      if (inv > 5) return 'badge-available';
+      if (inv > 0) return 'badge-limited';
+      return 'badge-out';
+    },
+    isOutOfStock() {
+      return this.photo && (this.photo.inventory ?? 0) === 0;
     }
   },
   mounted() {
@@ -100,6 +128,7 @@ export default {
       addItemToCart: 'addToCart',
     }),
     handleAddToCart() {
+      if (this.isOutOfStock) return;
       this.setPhotoOptions({
         id: this.photo.id,
         options: {
@@ -148,6 +177,31 @@ h1 {
   margin-bottom: 1rem;
 }
 
+.availability-label {
+  margin-bottom: 1rem;
+  padding: 0.4rem 0.8rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-radius: 0.25rem;
+  user-select: none;
+  width: fit-content;
+}
+
+.badge-available {
+  background-color: #a7c796;
+  color: #413f3f;
+}
+
+.badge-limited {
+  background-color: #f9bb86;
+  color: #413f3f;
+}
+
+.badge-out {
+  background-color: #e8a5a1;
+  color: #413f3f;
+}
+
 p.text-muted {
   color: #6c757d;
 }
@@ -190,7 +244,30 @@ p.text-muted {
   box-shadow: 0 2px 6px rgba(41,31,26,0.06);
 }
 
-.btn-checkout:hover {
+.btn-checkout:hover:not(:disabled) {
   background-color: #b89c94;
+}
+
+.btn-checkout:disabled {
+  background-color: #e8a5a1;
+  cursor: not-allowed;
+  color: #413f3f;
+}
+
+.btn-portfolio-back {
+  color: #413f3f; /* colore testo simile al testo normale */
+  background: transparent;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.btn-portfolio-back:hover {
+  color: #b89c94; /* colore hover, tono caldo e coordinato con btn-checkout */
+  text-decoration: underline;
 }
 </style>

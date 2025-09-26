@@ -1,56 +1,71 @@
 <template>
   <div class="checkout-page container my-5 px-3">
+    <!-- Form checkout con gestione submit personalizzata -->
     <form @submit.prevent="submitOrder" class="checkout-form mt-4">
+      <!-- Sezione dettagli spedizione -->
       <h2>Dettagli Spedizione</h2>
-      <input v-model="shipping.name" placeholder="Nome" required />
-      <input v-model="shipping.surname" placeholder="Cognome" required />
-      <input v-model="shipping.address" placeholder="Indirizzo" required />
+      <!-- Input nome -->
+      <input class="form-control mb-3" v-model="shipping.name" placeholder="Nome" required />
+      <!-- Input cognome -->
+      <input class="form-control mb-3" v-model="shipping.surname" placeholder="Cognome" required />
+      <!-- Input indirizzo -->
+      <input class="form-control mb-3" v-model="shipping.address" placeholder="Indirizzo" required />
+      <!-- Input CAP con validazione pattern 5 cifre -->
       <input 
-        v-model="shipping.cap" 
-        placeholder="CAP" 
-        required 
-        pattern="^\d{5}$" 
-        title="Inserisci esattamente 5 numeri" 
+        class="form-control mb-3"
+        v-model="shipping.cap"
+        placeholder="CAP"
+        required
+        pattern="^\d{5}$"
+        title="Inserisci esattamente 5 numeri"
       />
-      <input v-model="shipping.city" placeholder="Città" required />
-      <input v-model="shipping.email" placeholder="Email" type="email" required />
+      <!-- Input città -->
+      <input class="form-control mb-3" v-model="shipping.city" placeholder="Città" required />
+      <!-- Input email con validazione tipo email -->
+      <input class="form-control mb-3" v-model="shipping.email" placeholder="Email" type="email" required />
 
+      <!-- Sezione metodo di pagamento -->
       <h2>Metodo di Pagamento</h2>
-      <select v-model="payment.method" required>
+      <!-- Select metodo di pagamento -->
+      <select class="form-select mb-3" v-model="payment.method" required>
         <option disabled value="">Seleziona metodo</option>
         <option value="credit_card">Carta di credito</option>
         <option value="paypal">PayPal</option>
       </select>
 
-      <div class="payment-summary mt-3">
-        <div class="d-flex justify-content-between">
+      <!-- Riepilogo costi ordine -->
+      <div class="payment-summary mt-3 p-3 bg-light rounded">
+        <div class="d-flex justify-content-between mb-2">
           <span>Totale parziale</span>
           <span>{{ cartTotal }} €</span>
         </div>
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between mb-2">
           <span>Costo spedizione</span>
           <span v-if="cartTotal < FREE_SHIPPING_THRESHOLD">8€</span>
           <span v-else>Spedizione gratuita</span>
         </div>
         <hr />
-        <div class="d-flex justify-content-between fw-bold">
+        <div class="d-flex justify-content-between fw-bold fs-5">
           <span>Totale</span>
           <span>{{ cartTotalWithShipping }} €</span>
         </div>
       </div>
 
+      <!-- Bottone pagamento centrato, disabilitato se importo zero -->
       <div class="d-flex justify-content-center">
-        <button type="submit" class="btn btn-checkout mt-3" :disabled="cartTotalWithShipping === 0">
+        <button type="submit" class="btn btn-custom-primary mt-3" :disabled="cartTotalWithShipping === 0">
           Paga {{ cartTotalWithShipping }} €
         </button>
       </div>
     </form>
 
+    <!-- Messaggio conferma ordine dopo invio -->
     <p v-if="orderSubmitted" class="order-message mt-3 text-center">
       Grazie per il tuo acquisto!<br>Controlla la mail per la conferma d'ordine.
     </p>
   </div>
 
+  <!-- Footer componente -->
   <AppFooter />
 </template>
 
@@ -67,11 +82,11 @@ export default {
     return {
       shipping: { name: '', surname: '', address: '', cap: '', city: '', email: '' },
       payment: { method: '' },
-      orderSubmitted: false
+      orderSubmitted: false,
     };
   },
   computed: {
-    ...mapGetters(['cartTotal']),
+    ...mapGetters(['cartTotal']), // getter Vuex per totale carrello
     cartTotalWithShipping() {
       if (this.cartTotal === 0) return 0;
       if (this.cartTotal < FREE_SHIPPING_THRESHOLD) {
@@ -81,33 +96,39 @@ export default {
     },
     FREE_SHIPPING_THRESHOLD() {
       return FREE_SHIPPING_THRESHOLD;
-    }
+    },
   },
   methods: {
     submitOrder() {
+      // Validazione CAP 5 cifre esatte
       const capRegex = /^\d{5}$/;
       if (!capRegex.test(this.shipping.cap)) {
         alert('Il CAP deve contenere esattamente 5 numeri.');
         return;
       }
 
+      // Verde se carrello vuoto
       if (this.cartTotalWithShipping === 0) {
         alert('Il carrello è vuoto, aggiungi almeno un prodotto.');
         return;
       }
-      this.orderSubmitted = true;
-      this.$store.commit('CLEAR_CART'); // svuota carrello al pagamento
 
-      // Redirect automatico alla homepage dopo 2 secondi
+      // Flag stato ordine inviato per messaggio conferma
+      this.orderSubmitted = true;
+      // Reset carrello Vuex
+      this.$store.commit('CLEAR_CART');
+
+      // Redirect home dopo 2 secondi
       setTimeout(() => {
         this.$router.push('/');
       }, 2000);
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
+/* Wrapper checkout con max-width e stile box */
 .checkout-page {
   max-width: 510px;
   margin: 0 auto;
@@ -117,70 +138,36 @@ export default {
   box-shadow: 0 4px 28px rgba(41,31,26,0.08);
 }
 
+/* Responsive: padding per spaziature verticali maggiori su media */
+@media (max-width: 768px) {
+  .checkout-page {
+    padding: 160px 1.2rem 3.2rem 1.2rem;
+  }
+}
+
 @media (max-width: 600px) {
   .checkout-page {
     max-width: 97vw;
-    padding: 1.2rem 0.5rem 4rem 0.5rem;
+    padding: 180px 0.5rem 4rem 0.5rem;
     border-radius: 0;
     box-shadow: none;
   }
 }
 
-.payment-summary {
-  background: #f9f8f6;
-  padding: 1rem 1.2rem;
-  border-radius: 8px;
-  font-size: 1.05rem;
-  color: #413f3f;
-}
-
-.payment-summary div {
-  margin-bottom: 0.5rem;
-}
-
-.checkout-form input,
-.checkout-form select {
-  display: block;
-  width: 100%;
-  margin-bottom: 1rem;
-  padding: 0.75rem;
-  border: 1px solid #ede3d3;
-  border-radius: 4px;
-  font-size: 1.06rem;
-  background: #f9f8f6;
-}
-
-.checkout-form input:focus,
-.checkout-form select:focus {
-  border-color: #b5cace;
-  outline: none;
-  background: #fff;
-}
-
-.btn-checkout {
-  background-color: #b5cace;
-  color: #413f3f;
-  border: none;
-  border-radius: 4px;
-  padding: 0.95rem 1.35rem;
-  font-weight: bold;
-  font-size: 1.13rem;
-  margin-bottom: 2.4rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+/* Bottone personalizzato colore e stile */
+.btn-custom-primary {
+  background-color: #b5cace !important;
+  color: #413f3f !important;
+  border: none !important;
   box-shadow: 0 2px 6px rgba(41,31,26,0.06);
+  transition: background-color 0.2s ease;
 }
 
-.btn-checkout:hover:enabled {
-  background-color: #b89c94;
+.btn-custom-primary:hover:enabled {
+  background-color: #b89c94 !important;
 }
 
-.btn-checkout:disabled {
-  background-color: #ccc;
-  color: #888;
-  cursor: not-allowed;
-}
-
+/* Messaggio conferma ordine */
 .order-message {
   font-weight: 600;
   font-size: 1.1rem;

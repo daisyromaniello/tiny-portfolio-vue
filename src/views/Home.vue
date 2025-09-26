@@ -4,12 +4,12 @@
       id="heroCarousel"
       class="carousel slide"
       data-bs-ride="carousel"
-      data-bs-interval="6000"
+      data-bs-interval="4000"
       aria-roledescription="carousel"
       aria-label="Carosello immagini viaggio design architettura"
     >
       <div class="carousel-inner h-100">
-        <!-- Primo item: immagine con animazione typing, cliccabile per About -->
+        <!-- Prima slide: immagine di copertina con animazione typing e click per About -->
         <div
           class="carousel-item active h-100"
           :style="{
@@ -24,7 +24,9 @@
           @click="$router.push({ name: 'About' })"
           @keydown.enter="$router.push({ name: 'About' })"
         >
+          <!-- Overlay sfumato in basso per migliorare leggibilità testo -->
           <div class="tag-overlay"></div>
+          <!-- Caption fissa in posizione bottom left con animazione typing -->
           <div class="fixed-caption">
             <p :class="['typewriter-large', { 'typing-complete': typingDone }]">
               {{ displayedText }}
@@ -32,7 +34,7 @@
           </div>
         </div>
 
-        <!-- Carousel items: immagini tag cliccabili per PortfolioView con filtro -->
+        <!-- Slide multiple per i tag Portfolio, immagini cliccabili con filtro -->
         <div
           v-for="tagItem in carouselTags"
           :key="tagItem.tag"
@@ -56,12 +58,15 @@
             tabindex="0"
             @keydown.enter.prevent="navigateToTag(tagItem.tag)"
           >
+            <!-- Overlay sfumato sulla base immagine -->
             <div class="tag-overlay"></div>
+            <!-- Caption tag in basso a sinistra, bianco e bold -->
             <div class="tag-caption fw-bold text-white">{{ tagItem.name }}</div>
           </a>
         </div>
       </div>
 
+      <!-- Controllo precedente carosello -->
       <button
         class="carousel-control-prev"
         type="button"
@@ -72,6 +77,7 @@
         <span class="visually-hidden">Previous</span>
       </button>
 
+      <!-- Controllo successivo carosello -->
       <button
         class="carousel-control-next"
         type="button"
@@ -91,9 +97,9 @@ export default {
   data() {
     return {
       fullText: 'Fotografie di viaggio, design e architettura.',
-      displayedText: '',
-      typingDone: false,
-      carouselTags: [
+      displayedText: '', // testo visualizzato in typing effect durante l'animazione
+      typingDone: false, // flag per indicare se typing è finito
+      carouselTags: [    // dati per immagini dinamiche dei tag del portfolio
         { tag: 'viaggio', name: 'Viaggio', img: '/images/viaggio.jpg' },
         { tag: 'design', name: 'Design', img: '/images/design.jpg' },
         { tag: 'architettura', name: 'Architettura', img: '/images/architettura.jpg' }
@@ -101,12 +107,13 @@ export default {
     };
   },
   mounted() {
+    // Avvio animazione typing solo al caricamento componente
     this.typeWriterEffect();
   },
   methods: {
     typeWriterEffect() {
       let i = 0;
-      const speed = 80;
+      const speed = 60; // velocità animazione, più basso è più veloce
       const fullText = this.fullText;
       const display = () => {
         if (i <= fullText.length) {
@@ -119,6 +126,7 @@ export default {
       };
       display();
     },
+    // Navigazione al portfolio filtrato per tag selezionato
     navigateToTag(tag) {
       this.$router.push({ name: 'PortfolioView', query: { tag } });
     }
@@ -127,6 +135,7 @@ export default {
 </script>
 
 <style scoped>
+/* Contenitore carosello full screen */
 #heroCarousel {
   height: 100vh;
   width: 100vw;
@@ -136,21 +145,24 @@ export default {
   position: relative;
 }
 
+/* Ogni singola slide occupa 100% altezza viewport */
 .carousel-item {
   height: 100vh;
 }
 
+/* Caption fissa in basso a sx sopra la slide attiva */
 .fixed-caption {
   position: absolute;
   bottom: 2rem;
   left: 30px;
   max-width: 700px;
   z-index: 1060;
-  pointer-events: none;
+  pointer-events: none; /* disabilita interattività per non interferire */
   user-select: none;
   text-align: left;
 }
 
+/* Stile testo typing */
 .fixed-caption p {
   font-family: 'Courier New', monospace;
   font-weight: bold;
@@ -163,24 +175,27 @@ export default {
   word-spacing: 0;
 }
 
+/* Quando typing è finito cambia il comportamento white-space per andare a capo */
 .typing-complete {
   white-space: normal !important;
   overflow-wrap: break-word !important;
   word-break: break-word !important;
 }
 
+/* Link all’interno di slide con stile neutro */
 .carousel-item a {
   text-decoration: none;
   color: inherit;
   position: relative;
 }
 
-/* Usa filtri per ovviare allo stile inline */
+/* Filtri CSS per migliorare visibilità icone frecce carosello */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
   filter: drop-shadow(0 0 2px black) brightness(1.5);
 }
 
+/* Overlay sfumato in basso sulle immagini per migliorare leggibilità */
 .tag-overlay {
   position: absolute;
   bottom: 0;
@@ -188,13 +203,16 @@ export default {
   width: 100%;
   height: 40%;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
-  pointer-events: none;
+  pointer-events: none; /* overlay non interagisce con mouse */
   z-index: 1055;
   border-radius: 0 0 5px 5px;
 }
 
+/* Testo tag sulle immagini in basso a sx, bold e monospace */
 .tag-caption {
   font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 1.2rem; 
   user-select: none;
   pointer-events: none;
   position: relative;

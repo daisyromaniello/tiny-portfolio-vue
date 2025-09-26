@@ -1,13 +1,18 @@
 @font-face {
   font-family: 'HKGrotesk-Bold';
-  src: url('../fonts/hkgrotesk-bold-webfont.woff') format('woff');
+  src: url('~@/assets/fonts/hkgrotesk-bold-webfont.woff') format('woff');
   font-weight: bold;
   font-style: normal;
 }
 
 /* Variabili CSS globali */
 :root {
-  --body-font-family: 'HKGrotesk-Bold', 'BeausiteClassic-Light', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-hkgrotesk-bold: 'HKGrotesk-Bold';
+  --font-beausiteclassic-light: 'BeausiteClassic-Light';
+  --font-sans-serif: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-monospace: 'Courier New', monospace;
+
+  --body-font-family: var(--font-hkgrotesk-bold), var(--font-beausiteclassic-light), var(--font-sans-serif);
   --text-color: #413f3f;
   --background-color: #fef8f5;
 }
@@ -21,17 +26,9 @@ html, body {
   padding: 0;
 }
 
-/* Font per componenti chiave */
-.navbar,
-.newsletter,
-footer {
-  font-family: var(--body-font-family);
-  color: var(--text-color);
-}
-
 /* Paragrafi monospaced */
 p {
-  font-family: 'Courier New', monospace;
+  font-family: var(--font-monospace);
   font-size: 1.2rem;
   max-width: 600px;
   margin: 10px auto;
@@ -50,5 +47,5 @@ input, button, select, textarea {
 
 /* Componenti speciali monospace */
 .typewriter-large, .typewriter, .animated-text, .scritta-macchina {
-  font-family: 'Courier New', monospace;
+  font-family: var(--font-monospace);
 }

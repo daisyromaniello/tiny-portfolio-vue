@@ -1,9 +1,12 @@
 <template>
+  <!-- Dropdown carrello visibile condizionato da isDropdownVisible -->
   <div v-if="isDropdownVisible" class="cart-dropdown shadow rounded bg-white p-4" role="dialog" aria-modal="true">
+    <!-- Messaggio spedizione gratuita con stile monospace e grigio -->
     <div class="shipping-message mb-3 fw-semibold text-secondary" style="letter-spacing: 0.03em;">
       Spedizione gratuita per ordini sopra <strong class="text-dark">{{ freeShippingThreshold }}€</strong>
     </div>
 
+    <!-- Barra di progresso per progresso spedizione gratuita -->
     <div class="progress progress-sm mb-4" style="height: 6px; border-radius: 4px; background-color: #ede3d3;">
       <div
         class="progress-bar"
@@ -15,17 +18,21 @@
       ></div>
     </div>
 
+    <!-- Lista articoli nel carrello, chiave unica combinando id e opzioni -->
     <div
       v-for="item in cart"
       :key="item.id + item.format + item.paper + item.customization"
       class="d-flex align-items-center mb-3"
     >
       <div class="flex-grow-1">
+        <!-- Titolo e dettagli formato -->
         <div class="fw-bold mb-1">{{ item.title }}</div>
         <div class="text-muted small">{{ item.format }} cm</div>
+        <!-- Prezzo articolo -->
         <div class="text-dark fw-semibold">{{ item.price }} €</div>
       </div>
 
+      <!-- Controlli quantità con pulsanti meno e più -->
       <div class="d-flex align-items-center gap-2 mx-3 qty-clickable" role="group">
         <button
           class="btn btn-sm btn-qty"
@@ -46,6 +53,7 @@
         </button>
       </div>
 
+      <!-- Pulsante per rimuovere articolo -->
       <button
         class="btn btn-link p-0 btn-remove"
         @click.stop.prevent="removeItem(item)"
@@ -55,11 +63,13 @@
       </button>
     </div>
 
+    <!-- Totale parziale e riepilogo -->
     <div class="d-flex justify-content-between fw-bold fs-5 border-top pt-3 mt-3">
       <span>Totale parziale </span>
       <span>{{ cartTotal }} €</span>
     </div>
 
+    <!-- Pulsante chiamata all'azione per andare a checkout -->
     <button 
       class="btn btn-primary w-100 fw-bold mt-4 py-2 btn-cta"
       @click="goToCheckout"
@@ -83,13 +93,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      cart: "cartItems",
-      cartTotal: "cartTotal",
+      cart: "cartItems", // getter per lista articoli carrello
+      cartTotal: "cartTotal", // getter per prezzo totale
     }),
     freeShippingThreshold() {
       return FREE_SHIPPING_THRESHOLD;
     },
     freeShippingPercent() {
+      // Calcolo percentuale avanzamento verso spedizione gratuita
       return Math.min(
         100,
         (this.cartTotal / FREE_SHIPPING_THRESHOLD) * 100
@@ -98,18 +109,18 @@ export default {
   },
   methods: {
     incrementQty(item) {
-      this.$store.commit("INCREMENT_QTY", item);
+      this.$store.commit("INCREMENT_QTY", item); // Vuex commit per aumentare qty
     },
     decrementQty(item) {
-      this.$store.commit("DECREMENT_QTY", item);
+      this.$store.commit("DECREMENT_QTY", item); // Vuex commit per diminuire qty
     },
     removeItem(item) {
-      this.$store.commit("REMOVE_CART_ITEM", item);
+      this.$store.commit("REMOVE_CART_ITEM", item); // Vuex commit per rimuovere articolo
     },
     goToCheckout() {
-      this.isDropdownVisible = false;
+      this.isDropdownVisible = false; // Nasconde dropdown
       this.$nextTick(() => {
-        this.$router.push('/checkout');
+        this.$router.push('/checkout'); // Naviga a pagina checkout
       });
     }
   },
@@ -117,12 +128,11 @@ export default {
 </script>
 
 <style scoped>
+/* Box dropdown carrello con dimensioni e stile */
 .cart-dropdown {
   position: absolute;
   top: 100%;
   right: 0;
-  left: auto;
-  transform: none;
   width: 390px;
   max-width: 95vw;
   background: #fff;
@@ -131,35 +141,40 @@ export default {
   padding: 24px;
   z-index: 1050;
   font-family: Arial, sans-serif;
-  overflow: visible; /* assicura che nulla venga tagliato */
+  overflow: visible;
 }
 
-@media (max-width: 480px) {
+/* Media query per adattare il dropdown su mobile e tablet */
+@media (max-width: 768px) {
   .cart-dropdown {
     position: fixed !important;
-    top: 56px !important; /* altezza navbar, regola se serve */
+    top: 56px !important; /* altezza navbar */
     left: 50% !important;
-    right: auto !important;
     transform: translateX(-50%) !important;
     width: 95vw !important;
-    max-width: 95vw !important;
+    max-width: 400px !important;
+    z-index: 3000 !important;
+    box-sizing: border-box;
     margin: 0 !important;
-    overflow: visible !important;
   }
 }
 
+/* Messaggio spedizione con font monospace */
 .shipping-message {
   font-family: 'Courier New', monospace;
 }
 
+/* Barra progresso personalizzata */
 .progress {
   background-color: #ede3d3 !important;
 }
 
+/* Colorazione barra di progresso */
 .cart-dropdown .progress-bar {
   background-color: #b5cace !important;
 }
 
+/* Pulsanti quantità con colori personalizzati */
 .btn-qty {
   background-color: #b5cace !important;
   color: #413f3f !important;
@@ -175,18 +190,21 @@ export default {
 }
 
 .btn-qty:hover {
-  background-color: #b89c94 !important; /* colore hover personalizzato */
+  background-color: #b89c94 !important;
 }
 
+/* Wrapper per area cliccabile quantità */
 .qty-clickable {
   cursor: pointer;
   user-select: none;
 }
 
+/* Puntatore a mano per elementi cliccabili */
 .cursor-pointer {
   cursor: pointer;
 }
 
+/* Pulsante rimuovi articolo stile link */
 .btn-remove {
   color: #b5cace;
   font-size: 1.5rem;
@@ -201,6 +219,7 @@ export default {
   color: #413f3f;
 }
 
+/* Bottone chiamata all'azione per pagamento */
 .btn-cta {
   background-color: #b5cace !important;
   color: #413f3f !important;
@@ -212,6 +231,6 @@ export default {
 }
 
 .btn-cta:hover {
-  background-color: #b89c94 !important; /* colore hover personalizzato */
+  background-color: #b89c94 !important;
 }
 </style>

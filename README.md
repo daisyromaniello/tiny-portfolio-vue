@@ -10,7 +10,7 @@ Richiede Git e Node.js
 https://github.com/daisyromaniello/tiny-portfolio-vue
 
 ✔️Download e installazione
-Successivamente nella cartella "tiny-portfolio-vue" installare le dipendenze:
+Nella cartella "tiny-portfolio-vue" installare le dipendenze:
 npm install
 
 ✔️ Per testare il progetto

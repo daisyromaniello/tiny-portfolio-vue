@@ -1,6 +1,5 @@
 📷 Il progetto
 A tiny portfolio è il mio portfolio fotografico con funzionalità di e-commerce per la vendita di stampe fotografiche personalizzabili. 
-Per la descrizione più dettagliata del progetto fare riferimento alla relazione relativa al progetto.
 
 🖼️ Download, installazione e compilazione
 
